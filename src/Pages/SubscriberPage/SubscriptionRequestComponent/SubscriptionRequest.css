@@ -1,0 +1,73 @@
+body {
+    background: linear-gradient(135deg, #f8fafb, #e8f4f8 50%, #f0f9f4)
+}
+
+.stat-number {
+    background: linear-gradient(135deg, #0891b2, #10b981);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #0891b2, #10b981);
+    border: none;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(8, 145, 178, .3)
+}
+
+.btn-gradient:hover {
+    background: linear-gradient(135deg, #0e7490, #059669);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(8, 145, 178, .4)
+}
+
+.filter-btn {
+    transition: .2s
+}
+
+.filter-btn.active {
+    background: linear-gradient(135deg, #0891b2, #10b981) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+    box-shadow: 0 2px 8px rgba(8, 145, 178, .3) !important
+}
+
+.report-card {
+    transition: .3s;
+    border: 2px solid rgba(8, 145, 178, .15) !important
+}
+
+.report-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(8, 145, 178, .15) !important;
+    border-color: rgba(8, 145, 178, .4) !important
+}
+
+.report-card.requested {
+    background: linear-gradient(135deg, #fff9f0, #fff) !important;
+    border-color: rgba(255, 165, 0, .4) !important
+}
+
+.report-card.approved {
+    background: linear-gradient(135deg, #f0fdf7, #fff) !important;
+    border-color: rgba(16, 185, 129, .4) !important
+}
+
+.btn-download-sm {
+    background: linear-gradient(135deg, #0473BA 0%, #38D200 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-download-sm:hover {
+    background: linear-gradient(135deg, #035a93 0%, #2fb800 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(4, 115, 186, 0.3);
+}
