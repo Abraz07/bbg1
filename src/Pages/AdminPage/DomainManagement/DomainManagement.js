@@ -1,179 +1,243 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./DomainManagement.css";
 
-function DomainManagement() {
-    const [domains, setDomains] = useState([
-        {
-            name: "Financial Report",
-            description: "Financial and accounting report",
-            created: "15/01/2024"
-        },
-        {
-            name: "Operation",
-            description: "Operational metrics and performance report",
-            created: "15/01/2024"
-        },
-        {
-            name: "HR Analytic",
-            description: "Human Resource and workforce analytics",
-            created: "10/01/2024"
-        },
-    ]);
+export const DomainManagement = () => {
+  const [domains, setDomains] = useState([
+    { 
+      id: "1", 
+      name: "Financial Reports", 
+      description: "All financial and accounting reports", 
+      createdDate: "2024-01-15" 
+    },
+    { 
+      id: "2", 
+      name: "Operations", 
+      description: "Operational metrics and performance reports", 
+      createdDate: "2024-02-20" 
+    },
+    { 
+      id: "3", 
+      name: "HR Analytics", 
+      description: "Human resources and workforce analytics", 
+      createdDate: "2024-03-10" 
+    }
+  ]);
 
-    const [search, setSearch] = useState("");
-    const [showModal, setShowModal] = useState(false);
-    const [editIndex, setEditIndex] = useState(null);
-    const [formData, setFormData] = useState({ name: "", description: "" });
+  const [showModal, setShowModal] = useState(false);
+  const [editingDomain, setEditingDomain] = useState(null);
+  const [formData, setFormData] = useState({ name: "", description: "" });
+  const [notification, setNotification] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [deleteDomainId, setDeleteDomainId] = useState(null);
 
-    const openModal = (index = null) => {
-        if (index !== null) {
-            setEditIndex(index);
-            setFormData({
-                name: domains[index].name,
-                description: domains[index].description,
-
-            });
-        }
-        else {
-            setEditIndex(null);
-            setFormData({ name: "", description: " " });
-        }
-        setShowModal(true);
-    };
-    const closeModal = () => {
-        setShowModal(false);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!formData.name.trim() || !formData.description.trim()) return;
-
-        if (editIndex !== null) {
-            const updated = [...domains];
-            updated[editIndex] = {
-                ...updated[editIndex],
-                name: formData.name,
-                description: formData.description,
-            };
-            setDomains(updated);
-        }
-        else {
-            setDomains([
-                ...domains,
-                {
-                    name: formData.name,
-                    description: formData.description,
-                    created: new Date().toLocaleDateString(),
-                },
-            ]);
-        }
-        closeModal();
-    };
-
-    const deleteDomain = (index) => {
-        setDomains(domains.filter((_, i) => i !== index));
-    };
-
-    const filtered = domains.filter((d) =>
-        d.name.toLowerCase().includes(search.toLowerCase())
+  const openModal = (domain = null) => {
+    setEditingDomain(domain);
+    setFormData(
+      domain 
+        ? { name: domain.name, description: domain.description } 
+        : { name: "", description: "" }
     );
+    setShowModal(true);
+  };
 
-    return (
-        <div className="domain-container">
-            <div className="header-block">
-                <h2> Domain Management</h2>
-                <p className="subtitle">
-                    Your central control for structuring reports and aligning user subscriptions
-                    with your organizations operational framework
-                </p>
+  const closeModal = () => {
+    setShowModal(false);
+    setEditingDomain(null);
+    setFormData({ name: "", description: "" });
+  };
+
+  const saveDomain = () => {
+    if (!formData.name.trim()) {
+      setNotification("Domain name is required");
+      setTimeout(() => setNotification(""), 2000);
+      return;
+    }
+
+    const isDuplicate = domains.some(
+      (d) => 
+        d.name.toLowerCase() === formData.name.trim().toLowerCase() && 
+        d.id !== editingDomain?.id
+    );
+    
+    if (isDuplicate) {
+      setNotification("Domain name already exists");
+      setTimeout(() => setNotification(""), 2000);
+      return;
+    }
+
+    if (editingDomain) {
+      setDomains(
+        domains.map(d => 
+          d.id === editingDomain.id 
+            ? { ...d, name: formData.name, description: formData.description } 
+            : d
+        )
+      );
+      setNotification("Domain updated successfully");
+    } else {
+      const newDomain = {
+        id: Date.now().toString(),
+        name: formData.name,
+        description: formData.description,
+        createdDate: new Date().toISOString().split("T")[0]
+      };
+      setDomains([...domains, newDomain]);
+      setNotification("Domain created successfully");
+    }
+
+    closeModal();
+    setTimeout(() => setNotification(""), 3000);
+  };
+
+  const openDeleteConfirm = (domainId) => {
+    setDeleteDomainId(domainId);
+    setShowDeleteConfirm(true);
+  };
+
+  const closeDeleteConfirm = () => {
+    setShowDeleteConfirm(false);
+    setDeleteDomainId(null);
+  };
+
+  const deleteDomain = () => {
+    setDomains(domains.filter(d => d.id !== deleteDomainId));
+    setNotification("Domain deleted successfully");
+    closeDeleteConfirm();
+    setTimeout(() => setNotification(""), 3000);
+  };
+
+  const filteredDomains = domains.filter(
+    (d) =>
+      d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      d.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="dm-container">
+      {/* Notification */}
+      {notification && (
+        <div className="dm-notification">{notification}</div>
+      )}
+
+      {/* Header */}
+      <div className="dm-header">
+        <h1 className="dm-title">Domain Management</h1>
+        <button className="dm-btn-primary" onClick={() => openModal()}>
+          + Add Domain
+        </button>
+      </div>
+
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search domains..."
+        className="dm-search-input"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      {/* Table */}
+      <table className="dm-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredDomains.length === 0 ? (
+            <tr>
+              <td colSpan="4" className="dm-no-data">
+                No domains found
+              </td>
+            </tr>
+          ) : (
+            filteredDomains.map((domain) => (
+              <tr key={domain.id}>
+                <td>{domain.name}</td>
+                <td>{domain.description || <em>No description</em>}</td>
+                <td>{new Date(domain.createdDate).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="dm-btn-edit"
+                    onClick={() => openModal(domain)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="dm-btn-delete"
+                    onClick={() => openDeleteConfirm(domain.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
+      {/* Add/Edit Modal */}
+      {showModal && (
+        <div className="dm-modal-backdrop" onClick={closeModal}>
+          <div className="dm-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="dm-modal-title">
+              {editingDomain ? "Edit Domain" : "Create Domain"}
+            </h2>
+            <input
+              type="text"
+              placeholder="Domain Name"
+              className="dm-input"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              onKeyPress={(e) => e.key === 'Enter' && saveDomain()}
+              autoFocus
+            />
+            <textarea
+              placeholder="Description"
+              className="dm-textarea"
+              value={formData.description}
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              rows="4"
+            />
+            <div className="dm-modal-actions">
+              <button className="dm-btn-cancel" onClick={closeModal}>
+                Cancel
+              </button>
+              <button className="dm-btn-primary" onClick={saveDomain}>
+                {editingDomain ? "Update" : "Create"}
+              </button>
             </div>
+          </div>
+        </div>
+      )}
 
-            <div className="top-bar">
-                <button className="add-btn" onClick={() => openModal()}>
-                    + Add Domain
-                </button>
-                <input
-                    type="text"
-                    placeholder="Search domains.."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="search-input"
-                />
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="dm-modal-backdrop" onClick={closeDeleteConfirm}>
+          <div className="dm-modal" onClick={(e) => e.stopPropagation()}>
+            <h2 className="dm-modal-title">Delete Domain</h2>
+            <p className="dm-modal-text">
+              Are you sure you want to delete this domain? This action cannot be undone.
+            </p>
+            <div className="dm-modal-actions">
+              <button className="dm-btn-cancel" onClick={closeDeleteConfirm}>
+                Cancel
+              </button>
+              <button className="dm-btn-delete" onClick={deleteDomain}>
+                Delete
+              </button>
             </div>
-
-            <div className="table-container">
-                <table className="domain-table">
-                    <thead>
-                        <tr>
-                            <th>Domain Name</th>
-                            <th>Description</th>
-                            <th>Created Date</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filtered.map((d, i) => (
-                            <tr key={i}>
-                                <td><span className="icon"></span>{d.name}</td>
-                                <td>{d.description}</td>
-                                <td className="center">{d.created}</td>
-                                <td className="center">
-                                    <button className="edit-btn" onClick={() => openModal(i)}>Edit</button>
-                                    <button className="delete-btn" onClick={() => deleteDomain(i)}>Delete</button>
-                                </td>
-                            </tr>
-
-                        ))}
-                        {filtered.length === 0 && (
-                            <tr>
-                                <td colSpan="5" className="no-data">No domains found.</td>
-                            </tr>
-
-                        )}
-
-                    </tbody>
-                </table>
-            </div>
-            {showModal && (
-                <div className="modal-overlay">
-                    <div className="modal">
-                        <h3>{editIndex !== null ? "Edit Domain" : "Add Domain"}</h3>
-                        <form onSubmit={handleSubmit}>
-
-                            <label> Domain Name</label>
-                            <input
-                                type="text"
-                                value={formData.name}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, name: e.target.value })
-                                }
-                                required
-                            />
-                            <label> Description</label>
-                            <textarea
-                                rows="3"
-                                value={formData.description}
-                                onChange={(e) =>
-                                    setFormData({ ...formData, description: e.target.value })
-                                }
-                                required
-                            />
-                            <div className="modal-actions">
-                                <button type="submit" className="save-btn">
-                                    {editIndex !== null ? "Save Changes" : "Add Domain"}
-                                </button>
-                                <button
-                                    type="button"
-                                    className="cancel-btn"
-                                    onClick={closeModal}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
-        </div>);
-}
-export default DomainManagement;
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

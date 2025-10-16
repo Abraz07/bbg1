@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ApproveRejectSubscription from "../ApproveReject/ApproveRejectSubscription";
-import DomainManagement from "../DomainManagement/DomainManagement";
+import { DomainManagement } from "../DomainManagement/DomainManagement";
 import './Dashboard.css';
 import AuditLogs from "../AuditLog/AuditLogs";
 import { LogOut } from 'lucide-react'
@@ -19,7 +19,7 @@ export default function Dashboard({ navigate }) {
         { label: "Total Users", val: "1,248", change: "+12% from last month " },
         { label: "Active Reports", val: "348", change: "+8 new this week" },
         { label: "Pending Requests", val: "23", change: "Requires attention" },
-        { label: "System Activity", val: "1.2k", change: "Last 24 hours" }
+        { label: "System Activity", val: "4", change: "Last 24 hours" }
 
     ];
 
@@ -139,5 +139,4 @@ export default function Dashboard({ navigate }) {
         </div>
     );
 }
-
 

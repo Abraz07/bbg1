@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./ApproveRejectSubscription.css"
+import "./ApproveRejectSubscription.css";
 
 const ApproveRejectSubscription = () => {
     const [subscriptions, setSubscriptions] = useState([]);
@@ -12,7 +12,7 @@ const ApproveRejectSubscription = () => {
                 id: 1,
                 name: "Bhavesh",
                 email: "bhavesh@gmail.com",
-                domain: "finance",
+                domain: "Finance",
                 date: "15/01/2025",
                 status: "Pending",
             },
@@ -20,18 +20,17 @@ const ApproveRejectSubscription = () => {
                 id: 2,
                 name: "Ram",
                 email: "ram@gmail.com",
-                domain: "investment",
+                domain: "Investment",
                 date: "12/01/2025",
                 status: "Pending",
             },
-
             {
-                name: "Rahuk",
-                email: "rahuk@gmail.com",
-                domain: "finance",
-                date: "14/05/2025",
+                id: 3,
+                name: "Rahul",
+                email: "rahul@gmail.com",
+                domain: "Finance",
+                date: "14/01/2025",
                 status: "Pending",
-
             },
         ];
         setSubscriptions(dummyData);
@@ -44,6 +43,7 @@ const ApproveRejectSubscription = () => {
             )
         );
     };
+
     const handleReject = (id) => {
         setSubscriptions((prev) =>
             prev.map((sub) =>
@@ -58,95 +58,99 @@ const ApproveRejectSubscription = () => {
             sub.email.toLowerCase().includes(search.toLowerCase()) ||
             sub.domain.toLowerCase().includes(search.toLowerCase());
 
-        const matchFilter = filter == "All" ? true : sub.status == filter;
+        const matchFilter = filter === "All" ? true : sub.status === filter;
         return matchSearch && matchFilter;
-
     });
 
-    const pendingCount = subscriptions.filter((s) => s.status == "Pending").length;
+    const pendingCount = subscriptions.filter((s) => s.status === "Pending").length;
 
     return (
-        <div className="subscription-container">
-            <div className="top-header">
-                <div className="header-left">
-                    <h2> Subscription Requests</h2>
-                    <p> Manage and review employee subscription requests</p>
+        <div className="ar-container">
+            <div className="ar-top-header">
+                <div className="ar-header-left">
+                    <h2 className="ar-title">Subscription Requests</h2>
+                    <p className="ar-subtitle">Manage and review employee subscription requests</p>
                 </div>
-                <div className="header-right">
-                    <span className="pending-count"> ⏱ {pendingCount} Pending </span>
+                <div className="ar-header-right">
+                    <span className="ar-pending-count">
+                        
+                        {pendingCount} Pending
+                    </span>
                 </div>
             </div>
 
-            <div className="search-filter-section">
+            <div className="ar-search-filter-section">
                 <input
                     type="text"
-                    placeholder="Search by name,email, or domain..."
+                    className="ar-search-input"
+                    placeholder="Search by name, email, or domain..."
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)} />
+                    onChange={(e) => setSearch(e.target.value)}
+                />
 
-                <div className="filter-buttons">
+                <div className="ar-filter-buttons">
                     {["All", "Pending", "Approved", "Rejected"].map((tab) => (
                         <button
                             key={tab}
-                            className={`filter-tab ${filter == tab ? "active" : ""}`}
+                            className={`ar-filter-tab ${filter === tab ? "ar-active" : ""}`}
                             onClick={() => setFilter(tab)}
                         >
                             {tab}
-
                         </button>
                     ))}
                 </div>
             </div>
 
-            {filteredData.map((sub) => (
-                <div key={sub.id} className="subscription-card">
-                    <div className="sub-info">
-                        <h5>{sub.name}</h5>
-                        <p>{sub.email}</p>
-                        <p className="org-date">Request Date: {sub.date}</p>
-                        <p className="domain-info">
-                            Requested Domain : <span>{sub.domain}</span>
-                        </p>
-                    </div>
+            <div className="ar-cards-container">
+                {filteredData.map((sub) => (
+                    <div key={sub.id} className="ar-subscription-card">
+                        <div className="ar-sub-info">
+                            <h5 className="ar-name">{sub.name}</h5>
+                            <p className="ar-email">{sub.email}</p>
+                            <p className="ar-date">Request Date: {sub.date}</p>
+                            <p className="ar-domain">
+                                Requested Domain: <span className="ar-domain-value">{sub.domain}</span>
+                            </p>
+                        </div>
 
-                    <div className="sub-actions">
-                        <span
-                            className={`status-badge ${sub.status == "Pending"
-                                    ? "status-pending"
-                                    : sub.status == "Approved"
-                                        ? "status-approved"
-                                        : "status-rejected"
+                        <div className="ar-sub-actions">
+                            <span
+                                className={`ar-status-badge ${
+                                    sub.status === "Pending"
+                                        ? "ar-status-pending"
+                                        : sub.status === "Approved"
+                                        ? "ar-status-approved"
+                                        : "ar-status-rejected"
                                 }`}
-                        >
-                            {sub.status}
-                        </span>
+                            >
+                                {sub.status}
+                            </span>
 
-                        {sub.status == "Pending" && (
-                            <div className="btn-group">
-                                <button
-                                    className="action-btn approve"
-                                    onClick={() => handleApprove(sub.id)}
-                                >
-                                    Approve
-                                </button>
-
-                                <button
-                                    className="action-btn reject"
-                                    onClick={() => handleReject(sub.id)}
-                                >
-                                    Reject
-                                </button>
-                            </div>
-                        )}
+                            {sub.status === "Pending" && (
+                                <div className="ar-btn-group">
+                                    <button
+                                        className="ar-action-btn ar-approve"
+                                        onClick={() => handleApprove(sub.id)}
+                                    >
+                                        Approve
+                                    </button>
+                                    <button
+                                        className="ar-action-btn ar-reject"
+                                        onClick={() => handleReject(sub.id)}
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
-            ))}
-            {filteredData.length === 0 && (
-                <p className="no-data">No records found.</p>
-            )}
+                ))}
+                {filteredData.length === 0 && (
+                    <p className="ar-no-data">No records found.</p>
+                )}
+            </div>
         </div>
     );
 };
+
 export default ApproveRejectSubscription;
-
-
