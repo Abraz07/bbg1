@@ -1,23 +1,22 @@
 
 import React, { useState } from 'react';
-import { User, Mail, Lock, Eye, EyeOff, Building2, ArrowRight } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 const SignupPage = ({ role, navigate }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        confirmPassword: '',
-        organization: ''
+        confirmPassword: ''
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errors, setErrors] = useState({});
 
     const roleConfig = {
-        user: { color: '#38D200', title: 'User Registration', needsOrg: true },
-        admin: { color: '#0473EA', title: 'Admin Registration', needsOrg: true },
-        ops: { color: '#38D200', title: 'Ops Registration', needsOrg: false }
+        user: { color: '#38D200', title: 'User Registration' },
+        admin: { color: '#0473EA', title: 'Admin Registration' },
+        ops: { color: '#38D200', title: 'Ops Registration' }
     };
 
     const config = roleConfig[role];
@@ -47,9 +46,6 @@ const SignupPage = ({ role, navigate }) => {
         }
         if (formData.password !== formData.confirmPassword) {
             newErrors.confirmPassword = 'Passwords do not match';
-        }
-        if (config.needsOrg && !formData.organization.trim()) {
-            newErrors.organization = 'Organization is required';
         }
         return newErrors;
     };
@@ -119,28 +115,6 @@ const SignupPage = ({ role, navigate }) => {
                         </div>
                         {errors.email && <span className="error-text">{errors.email}</span>}
                     </div>
-
-                    {config.needsOrg && (
-                        <div className="form-group">
-                            <label htmlFor="organization" className="form-label">
-                                {role === 'user' ? 'Organization to Subscribe' : 'Organization Name'}
-                            </label>
-                            <div className="input-wrapper">
-                                <Building2 size={20} className="input-icon" />
-                                <input
-                                    type="text"
-                                    id="organization"
-                                    name="organization"
-                                    className={`form-input ${errors.organization ? 'error' : ''}`}
-                                    placeholder="Acme Corp"
-                                    value={formData.organization}
-                                    onChange={handleChange}
-                                    onKeyPress={handleKeyPress}
-                                />
-                            </div>
-                            {errors.organization && <span className="error-text">{errors.organization}</span>}
-                        </div>
-                    )}
 
                     <div className="form-group">
                         <label htmlFor="password" className="form-label">Password</label>

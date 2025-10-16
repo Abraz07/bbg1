@@ -1,110 +1,68 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 .dash {
     display: flex;
-    height: 100vh;
-    background: #f5f5f5;
-    font-family: -apple-system, sans-serif;
+    min-height: 100vh;
+    background: #f9fafb;
 }
 
+/* Sidebar */
 .side {
-    width: 280px;
-    background: linear-gradient(180deg, #0473EA 0%, #0a5bb8 50%, #064a8e 100%);
-    color: white;
-    transition: width 0.3s;
-    position: relative;
+    width: 260px;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
 }
 
-.side::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #38D200 0%, #2AB800 50%, #38D200 100%);
-}
-
-.side:not(.open) {
-    width: 0;
-    overflow: hidden;
+.side.open {
+    transform: translateX(0);
 }
 
 .side-head {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 24px;
-    background: rgba(56, 210, 0, 0.08);
-    border-bottom: 1px solid rgba(56, 210, 0, 0.15);
-}
-
-.logo-icon {
-    font-size: 28px;
-}
-
-.side-head h2 {
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.side-head p {
-    font-size: 12px;
-    opacity: 0.7;
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .side-nav {
-    padding: 0 16px;
-    margin-top: 8px;
+    padding: 20px;
 }
 
 .nav-label {
     font-size: 12px;
-    opacity: 0.6;
-    padding: 8px 12px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: #B8E6FF;
-    font-weight: 600;
+    color: #9ca3af;
+    margin-bottom: 8px;
 }
 
 .nav-btn {
-    width: 100%;
-    padding: 12px 16px;
-    background: transparent;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 4px;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    color: #374151;
     font-size: 14px;
-    transition: all 0.3s ease;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Sidebar selected — match original Sidebar gradient */
+.side .nav-btn.active {
+    background: linear-gradient(90deg, rgba(56, 210, 0, 0.2), rgba(56, 210, 0, 0.1));
+    border-left: 3px solid #38D200;
+    font-weight: 600;
+    /* keep text/icon color inherited so it stays readable on white layout */
+    transition: background 180ms ease, transform 180ms ease;
+    padding-left: 13px;
+    /* compensates for border-left */
     position: relative;
 }
 
-.nav-btn span {
-    font-size: 20px;
-}
-
-.nav-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(4px);
-}
-
-.nav-btn.active {
-    background: linear-gradient(90deg, rgba(56, 210, 0, 0.2), rgba(56, 210, 0, 0.1));
-    border-left: 3px solid #38D200;
-    font-weight: 500;
-}
-
-.nav-btn.active::before {
+.side .nav-btn.active::before {
     content: '';
     position: absolute;
     right: 12px;
@@ -115,75 +73,61 @@
     box-shadow: 0 0 8px #38D200;
 }
 
+.side .nav-btn.active:hover,
+.side .nav-btn.active:focus {
+    background: linear-gradient(90deg, rgba(56, 210, 0, 0.26), rgba(56, 210, 0, 0.14));
+}
+
+
+/* Main */
 .main {
     flex: 1;
-    display: flex;
-    flex-direction: column;
+    padding: 24px;
 }
 
 .top {
-    background: white;
-    padding: 16px 32px;
-    border-bottom: 1px solid #e0e0e0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 24px;
 }
 
 .menu {
-    background: none;
+    background: transparent;
     border: none;
+    font-size: 20px;
     cursor: pointer;
-    padding: 8px;
-    font-size: 24px;
 }
 
 .actions {
     display: flex;
-    gap: 16px;
-    font-size: 20px;
-    cursor: pointer;
     align-items: center;
-}
-
-.notif {
-    position: relative;
-}
-
-.dot {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    width: 8px;
-    height: 8px;
-    background: #ef4444;
-    border-radius: 50%;
-}
-
-.content {
-    flex: 1;
-    overflow: auto;
-    padding: 32px;
-    background: #f9fafb;
+    gap: 12px;
 }
 
 .logout-btn {
-    padding: 8px 16px;
-    background: #0473EA;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
+    padding: 8px 14px;
+    border: none;
+    background: #dc2626;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
 }
 
-.logout-btn:hover {
-    background: #0a5bb8;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(4, 115, 234, 0.3);
+/* Progress Bar */
+.progress-bar-bg {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease;
 }

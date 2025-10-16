@@ -58,7 +58,9 @@ const LoginPage = ({ role, navigate }) => {
     return (
         <div className="auth-container">
             <div className="auth-box">
-                <button className="back-button" onClick={() => navigate('landing')}>Back</button>
+                <button className="back-button" onClick={() => navigate('landing')}>
+                    ← Back
+                </button>
 
                 <div className="auth-header">
                     <h1 className="auth-title">{config.title}</h1>

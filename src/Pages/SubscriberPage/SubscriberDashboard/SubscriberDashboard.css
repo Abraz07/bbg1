@@ -164,34 +164,6 @@ body {
     flex: 1;
 }
 
-
-.sidebar-toggle {
-    position: fixed;
-    top: 1px;
-    z-index: 1000;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar-toggle.open {
-    left: 296px;
-}
-
-.sidebar-toggle.closed {
-    left: 16px;
-}
-
-.sidebar-toggle:hover {
-    background: #f7fafc;
-    border-color: #10b981;
-}
-
 .main-content {
     transition: margin-left 0.3s ease;
     display: flex;
@@ -214,44 +186,36 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.header-left {
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 24px;
+}
+
+.header-actions {
     display: flex;
+    gap: 16px;
+    font-size: 20px;
+    cursor: pointer;
     align-items: center;
 }
 
-.header-title {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #333;
+.notif-icon {
+    position: relative;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-right: 8px;
-}
-
-.user-name-header {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
-}
-
-.user-role-header {
-    font-size: 12px;
-    color: #6b7280;
-    text-transform: capitalize;
+.notif-dot {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
 }
 
 .logout-btn {

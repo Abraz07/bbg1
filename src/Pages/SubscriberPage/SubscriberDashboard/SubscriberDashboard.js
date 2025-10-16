@@ -130,14 +130,6 @@ const SubscriberDashboard = ({ navigate: navigateToPage }) => {
 
     return (
         <>
-            <button
-                className={`sidebar-toggle ${sidebarOpen ? 'open' : 'closed'}`}
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                aria-label="Toggle sidebar"
-            >
-                ☰
-            </button>
-
             <div className={`sidebar ${!sidebarOpen ? 'closed' : ''}`}>
                 <div className="sidebar-stripe"></div>
 
@@ -172,15 +164,10 @@ const SubscriberDashboard = ({ navigate: navigateToPage }) => {
 
             <div className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
                 <div className="top-header">
-                    <div className="header-left">
-                        <h3 className="header-title">Subscriber Dashboard</h3>
-                    </div>
-                    <div className="header-right">
-                        <div className="user-info">
-                            <span className="user-name-header">{user.name}</span>
-                            <span className="user-role-header">{user.role}</span>
-                        </div>
-                        <button className="logout-btn" onClick={logout}>
+                    <button onClick={() => setSidebarOpen(!sidebarOpen)} className="menu-btn">☰</button>
+                    <div className="header-actions">
+                        <div className="notif-icon"> <span className="notif-dot"></span></div>
+                        <button onClick={logout} className="logout-btn">
                             <LogOut style={{ width: 16, height: 16 }} />
                             Logout
                         </button>
